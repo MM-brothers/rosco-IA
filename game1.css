@@ -1,0 +1,64 @@
+/* game1.css - estilos para el rosco (boceto) */
+:root{
+  --bg:#f5f7fa;
+  --accent:#007bff;
+}
+html,body{height:100%;}
+body{
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+  background:var(--bg);
+  margin:0;
+  color:#0f1724;
+}
+.container{ text-align:center; padding:18px; }
+.container h1{ margin:6px 0 10px; font-size:1.25rem; }
+.rosco{ position:relative; margin:20px auto; background:transparent; border-radius:50%; box-sizing:border-box; }
+.letter{
+  position:absolute;
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  border:2px solid #e6eef5;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:transform .12s, background .12s, border-color .12s, opacity .2s;
+  font-weight:700;
+  box-shadow:0 2px 6px rgba(12,25,40,0.06);
+}
+.letter:focus{ outline:none; box-shadow:0 6px 18px rgba(12,25,40,0.12); }
+.letter.active{ transform:scale(1.12); box-shadow:0 8px 20px rgba(0,0,0,0.12); border-color:var(--accent); }
+.letter.right{ background:linear-gradient(135deg,#d4edda,#c3e6cb); border-color:#28a745; color:#155724; opacity:0.95; }
+.letter.wrong{ background:linear-gradient(135deg,#f8d7da,#f5c6cb); border-color:#dc3545; color:#721c24; opacity:0.95; }
+.letter.passed{ background:#fff3cd; border-color:#ffc107; color:#856404; }
+.hub{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:46%;
+  height:46%;
+  border-radius:50%;
+  background:linear-gradient(180deg,#fff,#f0f4f8);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  box-shadow:0 6px 18px rgba(15,30,50,0.06);
+  text-align:center;
+}
+.hub #question{ font-size:1rem; margin-bottom:12px; padding:0 8px; }
+.controls button{ margin:6px; padding:8px 12px; border-radius:6px; border:1px solid #cfd8e3; background:#fff; cursor:pointer; }
+.controls button:hover{ box-shadow:0 4px 8px rgba(0,0,0,0.06); }
+@media (max-width:720px){
+  .rosco{ transform:scale(.86); }
+  .letter{ width:44px;height:44px; }
+  .hub{ width:56%; height:56%; }
+}
