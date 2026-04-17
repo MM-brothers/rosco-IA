@@ -1,125 +1,31 @@
 <!doctype html>
 <html lang="es">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Rosco - Pasapalabra (Sketch)</title>
-    <link rel="stylesheet" href="game1.css">
-    <style>
-        /* small safety: ensure body uses system font while external CSS loads */
-        html,body{height:100%;}
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Rosco - Pasapalabra</h1>
-        <div id="rosco" class="rosco" aria-label="Rosco">
-            <!-- letras generadas por JS -->
-            <div class="hub" id="hub">
-                <div id="question">Haz clic en una letra</div>
-                <div class="controls">
-                    <button id="passBtn">Pasar</button>
-                    <button id="rightBtn">Acerté</button>
-                    <button id="wrongBtn">Fallé</button>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>Rosco - Pasapalabra (Sketch)</title>
+        <link rel="stylesheet" href="game1.css">
+        <script src="game1-1.js" async defer></script>
+        <style>
+            html,body{height:100%;}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Rosco de inteligencia artifical:</h1>
+            <h2>Responde correctamente más del 75% de las preguntas para pasar de prueba</h2>
+            <div id="rosco" class="rosco" aria-label="Rosco">
+                <!-- letras generadas por JS -->
+                <div class="hub" id="hub">
+                    <div id="question">Haz clic en una letra</div>
+                    <div class="controls">
+                        <button id="passBtn">Pasar</button>
+                        <button id="rightBtn">Acerté</button>
+                        <button id="wrongBtn">Fallé</button>
+                    </div>
                 </div>
             </div>
+            <p style="font-size:.9rem;color:#666;margin-top:8px">Atajos: ENTER = acerté · ESPACIO = pasar · Flechas = navegar</p>
         </div>
-        <p style="font-size:.9rem;color:#666;margin-top:8px">Atajos: ENTER = acerté · ESPACIO = pasar · Flechas = navegar</p>
-    </div>
-
-    <script>
-    (function(){
-        const letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','Ñ','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
-        const rosco = document.getElementById('rosco');
-        const hub = document.getElementById('hub');
-        const questionEl = document.getElementById('question');
-        let current = null;
-
-        const size = 520;
-        const radius = size/2 - 70;
-        rosco.style.width = size + 'px';
-        rosco.style.height = size + 'px';
-
-        letters.forEach((ltr,i)=>{
-            const angle = (360 / letters.length) * i - 90;
-            const rad = angle * Math.PI / 180;
-            const x = (size/2) + radius * Math.cos(rad);
-            const y = (size/2) + radius * Math.sin(rad);
-            const span = document.createElement('button');
-            span.className = 'letter';
-            span.style.left = (x) + 'px';
-            span.style.top = (y) + 'px';
-            span.style.transform = 'translate(-50%,-50%) rotate(' + (angle+90) + 'deg)';
-            span.textContent = ltr;
-            span.setAttribute('data-letter', ltr);
-            span.addEventListener('click', ()=>{
-                selectLetter(span);
-            });
-            rosco.appendChild(span);
-        });
-
-        function selectLetter(el){
-            if(current) current.classList.remove('active');
-            current = el;
-            el.classList.add('active');
-            const l = el.getAttribute('data-letter');
-            questionEl.textContent = 'Pregunta para ' + l + ': (ejemplo) — palabra que empieza por ' + l;
-        }
-
-        document.getElementById('passBtn').addEventListener('click', ()=> {
-            if(!current) return;
-            current.classList.add('passed');
-            questionEl.textContent = 'Pasaste la letra ' + current.getAttribute('data-letter');
-            current.classList.remove('active');
-            current = null;
-        });
-        document.getElementById('rightBtn').addEventListener('click', ()=> {
-            if(!current) return;
-            current.classList.add('right');
-            questionEl.textContent = 'Acertaste la letra ' + current.getAttribute('data-letter');
-            current.classList.remove('active');
-            current = null;
-        });
-        document.getElementById('wrongBtn').addEventListener('click', ()=> {
-            if(!current) return;
-            current.classList.add('wrong');
-            questionEl.textContent = 'Fallaste la letra ' + current.getAttribute('data-letter');
-            current.classList.remove('active');
-            current = null;
-        });
-
-        // navegación por teclado
-        document.addEventListener('keydown', (e)=>{
-            if(!current) {
-                const first = document.querySelector('.letter:not(.right):not(.wrong):not(.passed)');
-                if(first) selectLetter(first);
-                return;
-            }
-            if(e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-                navigate(1);
-            } else if(e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-                navigate(-1);
-            } else if(e.key === 'Enter') {
-                document.getElementById('rightBtn').click();
-            } else if(e.key === ' ') {
-                document.getElementById('passBtn').click();
-                e.preventDefault();
-            }
-        });
-
-        function navigate(dir){
-            const all = Array.from(document.querySelectorAll('.letter'));
-            const idx = all.indexOf(current);
-            let next = null;
-            for(let i=1;i<=all.length;i++){
-                const cand = all[(idx + dir*i + all.length)%all.length];
-                if(!cand.classList.contains('right') && !cand.classList.contains('wrong') && !cand.classList.contains('passed')){
-                    next = cand; break;
-                }
-            }
-            if(next) selectLetter(next);
-        }
-    })();
-    </script>
-</body>
+    </body>
 </html>
