@@ -35,6 +35,11 @@
                 const l = el.getAttribute('data-letter');
                 questionEl.textContent = 'Pregunta para ' + l + ': (ejemplo) — palabra que empieza por ' + l;
             }
+            /*
+            Este apartado será sustituido por un sistema en el que el botón de enviar de un form
+            tendrá una clase u otra en función de la respuesta del usuario, de esta forma se
+            podrá saber con certeza la veracidad de la respuesta
+            */
             document.getElementById('rightBtn').addEventListener('click', ()=> {
                 if(!current) return;
                 current.classList.add('right');
@@ -51,7 +56,7 @@
                     current = null;
                 });
             });
-            // navegación por teclado
+            // navegación por teclado (pendiente de reformatear o suprimir)
             document.addEventListener('keydown', (e)=>{
                 if(!current) {
                     const first = document.querySelector('.letter:not(.right):not(.wrong):not(.passed)');
